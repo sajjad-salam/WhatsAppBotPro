@@ -53,7 +53,7 @@ TEXT_EDIT_STYLE = """
         border-radius: 15px;
         padding: 10px;
         font-size: 11px;
-        font-family: 'Segoe UI';
+        font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
     }
     QTextEdit:focus {
         border: 1px solid rgba(0, 255, 156, 0.4);

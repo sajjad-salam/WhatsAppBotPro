@@ -10,19 +10,19 @@ class ConnectionThread(QThread):
         self.bot = bot
 
     def run(self):
-        self.log_signal.emit("▸ INICIANDO SISTEMA...", "system")
+        self.log_signal.emit("▸ جارٍ بدء النظام...", "system")
 
         if self.bot.iniciar(headless=False):
             self.log_signal.emit(
-                "✓ Navegador aberto. Verificando sessão...", "info")
+                "✓ فتح المتصفح. جارٍ التحقق من الجلسة...", "info")
             if self.bot.aguardar_login():
-                self.log_signal.emit("✓✓✓ CONECTADO! ✓✓✓", "success")
-                self.log_signal.emit("▸ Sessão salva.", "success")
+                self.log_signal.emit("✓✓✓ متصل! ✓✓✓", "success")
+                self.log_signal.emit("▸ تم حفظ الجلسة.", "success")
                 self.status_signal.emit(True)
             else:
-                self.log_signal.emit("✗ Timeout: QR Code não lido.", "error")
+                self.log_signal.emit("✗ انتهت المهلة: لم يتم قراءة رمز الاستجابة السريعة.", "error")
                 self.bot.fechar()
                 self.status_signal.emit(False)
         else:
-            self.log_signal.emit("✗ Erro crítico ao abrir navegador.", "error")
+            self.log_signal.emit("✗ خطأ حرج أثناء فتح المتصفح.", "error")
             self.status_signal.emit(False)

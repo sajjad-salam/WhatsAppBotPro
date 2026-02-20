@@ -1,6 +1,6 @@
 import time
 from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit, QFrame, QMessageBox
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QFont
 
 # Imports Modularizados
@@ -25,7 +25,7 @@ class WhatsAppBotWindow(QMainWindow):
         self.start_timer()
 
     def setup_ui(self):
-        self.setWindowTitle("WhatsApp Bot // Professional Edition 2.0")
+        self.setWindowTitle("بوت واتساب // الإصدار الاحترافي 2.0")
         self.setGeometry(100, 80, 950, 600)
         self.setMinimumSize(950, 600)
 
@@ -35,6 +35,9 @@ class WhatsAppBotWindow(QMainWindow):
         main_layout.setSpacing(12)
         main_layout.setContentsMargins(18, 18, 18, 18)
         main_layout.addWidget(self.create_header())
+
+        # تعيين اتجاه RTL للواجهة
+        self.setLayoutDirection(Qt.RightToLeft)
 
         content = QHBoxLayout()
         content.setSpacing(15)
@@ -66,12 +69,12 @@ class WhatsAppBotWindow(QMainWindow):
         txl.setContentsMargins(0, 0, 0, 0)
         txl.setSpacing(2)
 
-        t = QLabel("WHATSAPP BOT")
+        t = QLabel("بوت واتساب")
         t.setFont(QFont("Segoe UI", 20, QFont.Bold))
         t.setStyleSheet(
             "color: #FFFFFF; background: transparent; letter-spacing: 2px;")
         txl.addWidget(t)
-        sub = QLabel("TEXT MESSAGING SYSTEM")
+        sub = QLabel("نظام إرسال الرسائل النصية")
         sub.setFont(QFont("Consolas", 8))
         sub.setStyleSheet(
             "color: #00FF9C; background: transparent; letter-spacing: 1px;")
@@ -88,7 +91,7 @@ class WhatsAppBotWindow(QMainWindow):
         sl.setSpacing(10)
         self.status_indicator = StatusIndicator()
         sl.addWidget(self.status_indicator)
-        self.status_label = QLabel("DESCONECTADO")
+        self.status_label = QLabel("غير متصل")
         self.status_label.setFont(QFont("Consolas", 10, QFont.Bold))
         self.status_label.setStyleSheet(
             "color: #FF3B5C; background: transparent; border: none; letter-spacing: 1px;")
@@ -105,27 +108,29 @@ class WhatsAppBotWindow(QMainWindow):
 
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(12)
-        self.btn_connect = GlowButton("CONECTAR", "◉", "#00FF9C")
+        self.btn_connect = GlowButton("اتصال", "◉", "#00FF9C")
         self.btn_connect.clicked.connect(self.conectar)
         self.btn_connect.setStyleSheet(GLOW_BTN_STYLE)
         btn_layout.addWidget(self.btn_connect)
-        self.btn_send = GlowButton("EXECUTAR", "▸", "#7A5CFF")
+        self.btn_send = GlowButton("تنفيذ", "▸", "#7A5CFF")
         self.btn_send.clicked.connect(self.disparar)
         self.btn_send.setEnabled(False)
         self.btn_send.setStyleSheet(EXEC_BTN_STYLE)
         btn_layout.addWidget(self.btn_send)
         layout.addLayout(btn_layout)
 
-        msg_card = BiohackerCard("MENSAGEM", "◈")
+        msg_card = BiohackerCard("الرسالة", "◈")
         self.txt_msg = QTextEdit()
+        self.txt_msg.setLayoutDirection(Qt.RightToLeft)
         self.txt_msg.setPlaceholderText(
-            "Digite a mensagem que será enviada...")
+            "اكتب الرسالة التي تريد إرسالها...")
         self.txt_msg.setStyleSheet(TEXT_EDIT_STYLE)
         msg_card.main_layout.addWidget(self.txt_msg)
         layout.addWidget(msg_card)
 
-        contacts_card = BiohackerCard("ALVOS // CONTATOS", "◎")
+        contacts_card = BiohackerCard("الأهداف // الجهات", "◎")
         self.txt_contacts = QTextEdit()
+        self.txt_contacts.setLayoutDirection(Qt.LeftToRight)
         self.txt_contacts.setPlaceholderText("11987654321\n11912345678...")
         self.txt_contacts.setStyleSheet(
             TEXT_EDIT_STYLE.replace("Segoe UI", "Consolas"))
@@ -141,10 +146,10 @@ class WhatsAppBotWindow(QMainWindow):
         layout.setSpacing(12)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        metrics_card = BiohackerCard("MÉTRICAS DO SISTEMA", "◉")
-        self.metric_time = SystemMetric("⧗", "TEMPO ATIVO", "00:00:00")
-        self.metric_sent = SystemMetric("◈", "EXECUTADOS", "0")
-        self.metric_rate = SystemMetric("◎", "TAXA DE ÊXITO", "0%")
+        metrics_card = BiohackerCard("مقاييس النظام", "◉")
+        self.metric_time = SystemMetric("⧗", "الوقت النشط", "00:00:00")
+        self.metric_sent = SystemMetric("◈", "المنفذة", "0")
+        self.metric_rate = SystemMetric("◎", "معدل النجاح", "0%")
         metrics_card.main_layout.addWidget(self.metric_time)
         metrics_card.main_layout.addWidget(self.metric_sent)
         metrics_card.main_layout.addWidget(self.metric_rate)
@@ -154,13 +159,13 @@ class WhatsAppBotWindow(QMainWindow):
             "background: rgba(0, 255, 156, 0.05); border: 1px solid rgba(0, 255, 156, 0.15); border-radius: 12px; padding: 12px;")
         il = QVBoxLayout(info_frame)
         il.setSpacing(6)
-        it = QLabel("◉ SISTEMA DE MENSAGENS")
+        it = QLabel("◉ نظام الرسائل")
         it.setFont(QFont("Consolas", 9, QFont.Bold))
         it.setStyleSheet(
             "color: #00FF9C; background: transparent; border: none;")
         il.addWidget(it)
 
-        for p in ["▸ Envio de mensagens de texto", "▸ Logs detalhados no terminal", "▸ Intervalo de segurança: 8s"]:
+        for p in ["▸ إرسال الرسائل النصية", "▸ سجلات تفصيلية في المحطة", "▸ فترة الأمان: 8 ثوان"]:
             pl = QLabel(p)
             pl.setFont(QFont("Segoe UI", 8))
             pl.setStyleSheet(
@@ -170,8 +175,9 @@ class WhatsAppBotWindow(QMainWindow):
         metrics_card.main_layout.addStretch()
         layout.addWidget(metrics_card)
 
-        logs_card = BiohackerCard("TERMINAL // LOGS", "◈")
+        logs_card = BiohackerCard("المحطة // السجلات", "◈")
         self.log_view = QTextEdit()
+        self.log_view.setLayoutDirection(Qt.RightToLeft)
         self.log_view.setReadOnly(True)
         self.log_view.setFont(QFont("Consolas", 8))
         self.log_view.setStyleSheet(LOG_STYLE)
@@ -198,7 +204,7 @@ class WhatsAppBotWindow(QMainWindow):
         if success:
             self.connected = True
             self.start_time = time.time()
-            self.status_label.setText("CONECTADO")
+            self.status_label.setText("متصل")
             self.status_label.setStyleSheet(
                 "color: #00FF9C; background: transparent; border: none;")
             self.status_indicator.set_color("#00FF9C")
@@ -207,22 +213,22 @@ class WhatsAppBotWindow(QMainWindow):
         else:
             self.btn_connect.setEnabled(True)
             QMessageBox.critical(
-                self, "✗ FALHA", "Não foi possível estabelecer conexão")
+                self, "✗ فشل", "تعذر إنشاء الاتصال")
 
     def disparar(self):
         if self.is_sending:
-            QMessageBox.warning(self, "⚠ ATENÇÃO", "Aguarde a operação atual")
+            QMessageBox.warning(self, "⚠ تنبيه", "انتظر العملية الحالية")
             return
         msg = self.txt_msg.toPlainText().strip()
         contatos = [c.strip()
                     for c in self.txt_contacts.toPlainText().split('\n') if c.strip()]
         if not msg or not contatos:
-            QMessageBox.warning(self, "⚠ DADOS INSUFICIENTES",
-                                "Preencha a mensagem e os alvos")
+            QMessageBox.warning(self, "⚠ بيانات غير كافية",
+                                "الرجاء إدخال الرسالة والأهداف")
             return
 
         reply = QMessageBox.question(
-            self, "◉ CONFIRMAR EXECUÇÃO", f"Executar para {len(contatos)} alvos?", QMessageBox.Yes | QMessageBox.No)
+            self, "◉ تأكيد التنفيذ", f"تنفيذ لـ {len(contatos)} هدف؟", QMessageBox.Yes | QMessageBox.No)
         if reply != QMessageBox.Yes:
             return
 
@@ -248,8 +254,8 @@ class WhatsAppBotWindow(QMainWindow):
         self.is_sending = False
         total = self.stats['success'] + self.stats['failed']
         rate = (self.stats['success'] / total * 100) if total > 0 else 0
-        QMessageBox.information(self, "✓ OPERAÇÃO CONCLUÍDA",
-                                f"Executados: {self.stats['success']}\nFalhas: {self.stats['failed']}\nIgnorados: {self.stats['skipped']}\nTaxa: {rate:.1f}%")
+        QMessageBox.information(self, "✓ اكتملت العملية",
+                                f"المنفذة: {self.stats['success']}\nالفاشلة: {self.stats['failed']}\nالمتجاهلة: {self.stats['skipped']}\nالمعدل: {rate:.1f}%")
 
     def start_timer(self):
         self.timer = QTimer()

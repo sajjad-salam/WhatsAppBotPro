@@ -25,12 +25,12 @@ class WhatsAppBot:
         try:
             import shutil
             if os.path.exists(self.session_dir):
-                print("[INFO] Limpando sessão antiga...")
+                print("[معلومات] جارٍ مسح الجلسة القديمة...")
                 shutil.rmtree(self.session_dir, ignore_errors=True)
-                print("[INFO] Sessão limpa com sucesso")
+                print("[معلومات] تم مسح الجلسة بنجاح")
                 return True
         except Exception as e:
-            print(f"[AVISO] Erro ao limpar sessão: {e}")
+            print(f"[تنبيه] خطأ في مسح الجلسة: {e}")
         return False
 
     def iniciar(self, headless=False):
@@ -54,7 +54,7 @@ class WhatsAppBot:
         options.add_experimental_option("useAutomationExtension", False)
 
         try:
-            print("[SISTEMA] Inicializando Driver...")
+            print("[نظام] جارٍ تهيئة المحرك...")
             driver_path = ChromeDriverManager().install()
 
             service = Service(driver_path)
@@ -62,16 +62,16 @@ class WhatsAppBot:
                 service.creation_flags = subprocess.CREATE_NO_WINDOW
 
             self.driver = webdriver.Chrome(service=service, options=options)
-            print("[SISTEMA] Acessando WhatsApp Web...")
+            print("[نظام] جارٍ الوصول إلى واتساب ويب...")
             self.driver.get("https://web.whatsapp.com")
             return True
 
         except Exception as e:
-            print(f"[ERRO CRÍTICO] Falha ao iniciar: {e}")
+            print(f"[خطأ حرج] فشل في البدء: {e}")
             return False
 
     def aguardar_login(self):
-        print("[LOGIN] Aguardando autenticação...")
+        print("[تسجيل الدخول] جارٍ انتظار المصادقة...")
         inicio = time.time()
 
         while (time.time() - inicio) < 120:
@@ -90,16 +90,16 @@ class WhatsAppBot:
     def formatar_numero(self, numero):
         numero = re.sub(r"\D", "", numero)
         if len(numero) < 10:
-            return None, "Número muito curto"
+            return None, "رقم قصير جداً"
         if len(numero) > 15:
-            return None, "Número muito longo"
+            return None, "رقم طويل جداً"
         if len(numero) in [10, 11]:
             numero = "55" + numero
-        return numero, "OK"
+        return numero, "موافق"
 
     def enviar(self, numero, mensagem):
         try:
-            print(f"\n[ENVIO] Iniciando envio para: {numero}")
+            print(f"\n[إرسال] جارٍ بدء الإرسال إلى: {numero}")
 
             # 1. Valida e Navega
             num_fmt, status = self.formatar_numero(numero)
@@ -119,8 +119,8 @@ class WhatsAppBot:
                 invalid = self.driver.find_elements(
                     By.XPATH, '//div[contains(text(), "número de telefone")]|//div[contains(text(), "phone number")]')
                 if invalid:
-                    return False, "Número inválido/Sem Whats"
-                return False, "Timeout (Internet/Whats lento)"
+                    return False, "رقم غير صالح/لا يوجد واتساب"
+                return False, "انتهت المهلة (إنترنت بطيء/واتساب بطيء)"
 
             time.sleep(1.5)
 
@@ -145,13 +145,13 @@ class WhatsAppBot:
                     box.send_keys(Keys.ENTER)
 
                 time.sleep(2)
-                return True, "✅ Texto enviado"
+                return True, "✅ تم إرسال النص"
 
-            return True, "✅ Enviado com sucesso"
+            return True, "✅ تم الإرسال بنجاح"
 
         except Exception as e:
-            print(f"[ENVIO] ERRO: {e}")
-            return False, f"❌ Erro: {str(e)}"
+            print(f"[إرسال] خطأ: {e}")
+            return False, f"❌ خطأ: {str(e)}"
 
     def fechar(self):
         if self.driver:

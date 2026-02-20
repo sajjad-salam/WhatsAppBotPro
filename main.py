@@ -1,7 +1,8 @@
 import sys
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont
-from src.ui.main_window import WhatsAppBotWindow     
+from src.ui.main_window import WhatsAppBotWindow
+
 
 def main():
     app = QApplication(sys.argv)
@@ -10,10 +11,10 @@ def main():
     app.setFont(QFont("Segoe UI", 9))
 
     print("="*60)
-    print("📱 WHATSAPP BOT - TEXT MESSAGING SYSTEM")
+    print("📱 بوت واتساب - نظام إرسال الرسائل")
     print("="*60)
-    print("Sistema de envio de mensagens de texto")
-    print("Logs detalhados aparecerão no terminal")
+    print("نظام إرسال الرسائل النصية")
+    print("ستظهر السجلات التفصيلية في المحطة")
     print("="*60)
     print()
 

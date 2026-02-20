@@ -59,6 +59,7 @@ class StatusIndicator(QWidget):
 class BiohackerCard(QFrame):
     def __init__(self, title, icon="", parent=None):
         super().__init__(parent)
+        self.setLayoutDirection(Qt.RightToLeft)
         self.setStyleSheet("""
             QFrame {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(26, 26, 35, 0.95), stop:1 rgba(15, 15, 20, 0.95));
@@ -76,21 +77,26 @@ class BiohackerCard(QFrame):
         self.main_layout.setSpacing(10)
 
         if title:
-            header = QHBoxLayout()
+            header_widget = QWidget()
+            header_widget.setLayoutDirection(Qt.RightToLeft)
+            header = QHBoxLayout(header_widget)
+            header.setContentsMargins(0, 0, 0, 0)
             header.setSpacing(8)
             if icon:
                 il = QLabel(icon)
                 il.setFont(QFont("Segoe UI", 12))
+                il.setLayoutDirection(Qt.LeftToRight)
                 il.setStyleSheet(
                     "color: #00FF9C; background: transparent; border: none;")
                 header.addWidget(il)
             tl = QLabel(title)
             tl.setFont(QFont("Segoe UI", 11, QFont.Bold))
+            tl.setLayoutDirection(Qt.RightToLeft)
             tl.setStyleSheet(
                 "color: #FFFFFF; background: transparent; border: none; letter-spacing: 1px;")
             header.addWidget(tl)
             header.addStretch()
-            self.main_layout.addLayout(header)
+            self.main_layout.addWidget(header_widget)
             sep = QFrame()
             sep.setFixedHeight(1)
             sep.setStyleSheet(
@@ -101,27 +107,32 @@ class BiohackerCard(QFrame):
 class SystemMetric(QFrame):
     def __init__(self, icon, label, value="---"):
         super().__init__()
+        self.setLayoutDirection(Qt.RightToLeft)
         self.setStyleSheet("background: transparent; border: none;")
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 5, 0, 5)
         layout.setSpacing(10)
         il = QLabel(icon)
         il.setFont(QFont("Segoe UI", 12))
+        il.setLayoutDirection(Qt.LeftToRight)
         il.setStyleSheet("color: #00FF9C; background: transparent;")
         layout.addWidget(il)
         tl = QLabel(label)
         tl.setFont(QFont("Segoe UI", 9))
+        tl.setLayoutDirection(Qt.RightToLeft)
         tl.setStyleSheet(
             "color: #8B8B9A; background: transparent; letter-spacing: 0.5px;")
         layout.addWidget(tl)
         layout.addStretch()
         vc = QFrame()
+        vc.setLayoutDirection(Qt.RightToLeft)
         vc.setStyleSheet(
             "background: rgba(0, 255, 156, 0.08); border: 1px solid rgba(0, 255, 156, 0.2); border-radius: 12px; padding: 4px 12px;")
         vl = QHBoxLayout(vc)
         vl.setContentsMargins(10, 3, 10, 3)
         self.value_label = QLabel(value)
         self.value_label.setFont(QFont("Consolas", 10, QFont.Bold))
+        self.value_label.setLayoutDirection(Qt.LeftToRight)
         self.value_label.setStyleSheet(
             "color: #00FF9C; background: transparent; border: none;")
         vl.addWidget(self.value_label)
